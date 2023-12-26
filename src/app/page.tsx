@@ -1,7 +1,11 @@
-export default function Home() {
+import React from "react";
+
+const HomePage = () => {
   return (
-    <main className="">
+    <div>
       <h2>Hello</h2>
-    </main>
+    </div>
   );
-}
+};
+
+export default HomePage;
