@@ -1,12 +1,14 @@
 "use client";
 
+import { useRegisterUserMutation } from "@/redux/api/authApi";
 import { Card } from "flowbite-react";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type Inputs = {
-  name: string;
+  fullName: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -16,10 +18,43 @@ const SignupPage = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const router = useRouter();
+
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (data.password !== data.confirmPassword) {
+      toast.error("Password and confirm password must be the same");
+
+      return;
+    }
+
+    const res = await registerUser(data);
+
+    if ("data" in res) {
+      if ("success" in res.data) {
+        toast.success("User created successfully");
+
+        router.push("/login");
+      }
+    } else if ("error" in res) {
+      if ("message" in res.error) {
+        toast.error(res.error.message);
+      } else {
+        toast.error("An error occurred");
+      }
+    } else {
+      toast.error("An error occurred");
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="max-w-xl my-10 container mx-auto px-2">
       <Card>
@@ -36,9 +71,9 @@ const SignupPage = () => {
               id="name"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Enter your name"
-              {...register("name", { required: true })}
+              {...register("fullName", { required: true })}
             />
-            {errors.name && (
+            {errors.fullName && (
               <span className="text-red-500 text-sm">
                 This field is required
               </span>
@@ -102,9 +137,11 @@ const SignupPage = () => {
             )}
           </div>
           <div className="">
-            <button className="bg-cyan-400 text-white duration-500 hover:bg-cyan-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2">
-              {/* <IoLogIn className="mr-2" /> */}
-              Sign Up
+            <button
+              className={`bg-cyan-400 text-white duration-500 hover:bg-cyan-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2 ${
+                isLoading && "opacity-50 cursor-not-allowed"
+              }`}>
+              {isLoading ? "Loading..." : "Sign Up"}
             </button>
           </div>
         </form>

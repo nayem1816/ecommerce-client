@@ -1,9 +1,13 @@
 "use client";
 
+import { useUserLoginMutation } from "@/redux/api/authApi";
+import { storeUserInfo } from "@/services/authService";
 import { Card } from "flowbite-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type Inputs = {
   email: string;
@@ -14,10 +18,29 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const router = useRouter();
+
+  const [userLogin, { isLoading }] = useUserLoginMutation();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const res = await userLogin(data);
+
+    if ("data" in res && res.data.success) {
+      toast.success("Login success");
+      storeUserInfo({ accessToken: res?.data?.data?.accessToken });
+
+      router.push("/");
+    } else if ("error" in res) {
+      if ("message" in res.error) {
+        toast.error(res.error.message);
+      } else {
+        toast.error("An error occurred");
+      }
+    }
+  };
 
   return (
     <div className="max-w-xl my-10 container mx-auto px-2">
@@ -69,9 +92,11 @@ const LoginPage = () => {
             </Link>
           </div>
           <div className="">
-            <button className="bg-cyan-400 text-white duration-500 hover:bg-cyan-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2">
-              {/* <IoLogIn className="mr-2" /> */}
-              Login
+            <button
+              className={`bg-cyan-400 text-white duration-500 hover:bg-cyan-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2 ${
+                isLoading && "opacity-50 cursor-not-allowed"
+              }`}>
+              {isLoading ? "Loading..." : "Login"}
             </button>
           </div>
         </form>

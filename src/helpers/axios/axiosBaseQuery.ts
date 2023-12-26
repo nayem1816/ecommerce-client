@@ -2,7 +2,19 @@ import axios from "axios";
 
 export const axiosBaseQuery =
   ({ baseUrl } = { baseUrl: "" }) =>
-  async ({ url, method, data, params, headers }) => {
+  async ({
+    url,
+    method,
+    data,
+    params,
+    headers,
+  }: {
+    url: string;
+    method: string;
+    data: any;
+    params: any;
+    headers: any;
+  }) => {
     try {
       const result = await axios({
         url: baseUrl + url,
@@ -13,7 +25,7 @@ export const axiosBaseQuery =
       });
       return { data: result.data };
     } catch (axiosError) {
-      const err = axiosError;
+      const err = axiosError as any;
       return {
         error: {
           status: err.response?.status,
