@@ -11,7 +11,7 @@ const ProductCard = ({ product }: { product: any }) => {
             <img
               src={product?.productImage?.url}
               alt="Just a flower"
-              className="w-full h-64  object-cover  rounded-2xl"
+              className="w-full h-48  object-cover  rounded-2xl"
             />
             <div className="flex-auto justify-evenly mt-2">
               <div className="flex flex-wrap ">

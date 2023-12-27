@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   return (
-    <Navbar className="container" rounded={true}>
+    <Navbar className="container mx-auto" rounded={true}>
       <Navbar.Brand href="/">
         <span className="text-3xl font-bold text-cyan-500">ecommerce</span>
       </Navbar.Brand>

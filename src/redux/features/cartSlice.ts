@@ -9,15 +9,27 @@ export const cartSlice = createSlice({
   },
   reducers: {
     addToCart: (state, action) => {
-      const id = action.payload.id;
+      const id = action.payload._id;
       const isProductInCart = state.cart.find(
         (product: any) => product._id === id
       );
 
+      if (state.cart.length >= 2) {
+        toast.info("You can only select 2 products", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        return;
+      }
+
       if (isProductInCart) {
         // alert('This product is already in your cart');
         toast.info("This product is already in your cart", {
-          position: "bottom-center",
+          position: "top-center",
           autoClose: 1000,
           hideProgressBar: true,
           closeOnClick: true,
@@ -27,7 +39,7 @@ export const cartSlice = createSlice({
       } else {
         state.cart.push({ ...action.payload, quantity: 1 });
         toast.success(`${action.payload.productName} added to cart`, {
-          position: "bottom-center",
+          position: "top-center",
           autoClose: 1000,
           hideProgressBar: true,
           closeOnClick: true,
@@ -54,7 +66,7 @@ export const cartSlice = createSlice({
           isProductInCart.quantity -= 1;
         } else {
           toast.info("Product quantity cannot be less than 1", {
-            position: "bottom-center",
+            position: "top-center",
             autoClose: 1000,
             hideProgressBar: true,
             closeOnClick: true,
@@ -74,7 +86,7 @@ export const cartSlice = createSlice({
       if (isProductInCart) {
         state.cart = state.cart.filter((product: any) => product._id !== id);
         toast.success(`${isProductInCart.productName} removed from cart`, {
-          position: "bottom-center",
+          position: "top-center",
           autoClose: 1000,
           hideProgressBar: true,
           closeOnClick: true,
@@ -83,7 +95,7 @@ export const cartSlice = createSlice({
         });
       } else {
         toast.info("This product is not in your cart", {
-          position: "bottom-center",
+          position: "top-center",
           autoClose: 1000,
           hideProgressBar: true,
           closeOnClick: true,

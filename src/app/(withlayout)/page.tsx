@@ -7,8 +7,8 @@ const HomePage = async () => {
   const data = await res.json();
 
   return (
-    <div className="container mt-5">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+    <div className="container mx-auto mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
         {data?.data?.map((item: any) => {
           return <ProductCard key={item?._id} product={item} />;
         })}
