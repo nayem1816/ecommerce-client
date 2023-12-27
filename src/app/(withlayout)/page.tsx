@@ -2,7 +2,9 @@ import ProductCard from "@/components/Card/ProductCard";
 import React from "react";
 
 const HomePage = async () => {
-  const res = await fetch("http://localhost:4100/api/v1/product");
+  const res = await fetch(
+    "https://ecommerce-server-cyan.vercel.app/api/v1/product"
+  );
 
   const data = await res.json();
 
