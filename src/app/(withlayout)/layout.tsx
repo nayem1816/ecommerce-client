@@ -7,7 +7,7 @@ import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-storage";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState, ReactNode } from "react";
 
-const layout = ({ children }: { children: ReactNode }) => {
+const WithoutLayout = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const accessToken = getFromLocalStorage("accessToken");
 
@@ -47,4 +47,4 @@ const layout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default layout;
+export default WithoutLayout;

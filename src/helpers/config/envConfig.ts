@@ -1,3 +1,3 @@
 export const getBaseUrl = () => {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4100/api/v1";
+  return "https://ecommerce-server-cyan.vercel.app/api/v1";
 };

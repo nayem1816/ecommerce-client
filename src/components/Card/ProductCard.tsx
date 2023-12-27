@@ -1,6 +1,7 @@
 import React from "react";
 
 import Cart from "./Cart";
+import Image from "next/image";
 
 const ProductCard = ({ product }: { product: any }) => {
   return (
@@ -8,7 +9,9 @@ const ProductCard = ({ product }: { product: any }) => {
       <div className="max-w-md w-full shadow-lg rounded-xl py-6 px-4">
         <div className="flex flex-col">
           <div className="">
-            <img
+            <Image
+              width={300}
+              height={300}
               src={product?.productImage?.url}
               alt="Just a flower"
               className="w-full h-48  object-cover  rounded-2xl"

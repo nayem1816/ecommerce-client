@@ -9,6 +9,7 @@ import {
 } from "../../../redux/features/cartSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type Cart = {
   _id: string;
@@ -86,7 +87,9 @@ const CartPage = () => {
                   <tr key={item._id}>
                     <td className="p-4 px-6 text-center whitespace-nowrap flex gap-2 items-center">
                       <div className="img">
-                        <img
+                        <Image
+                          width={100}
+                          height={100}
                           className="w-20 h-20 rounded-xl"
                           src={item?.productImage?.url}
                           alt=""
