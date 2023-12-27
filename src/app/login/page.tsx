@@ -29,7 +29,13 @@ const LoginPage = () => {
     const res = await userLogin(data);
 
     if ("data" in res && res.data.success) {
-      toast.success("Login success");
+      toast.success("Login success", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
       storeUserInfo({ accessToken: res?.data?.data?.accessToken });
 
       router.push("/");

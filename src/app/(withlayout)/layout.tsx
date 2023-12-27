@@ -10,6 +10,7 @@ import React, { useEffect, useState, ReactNode } from "react";
 const layout = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const accessToken = getFromLocalStorage("accessToken");
+
   const router = useRouter();
 
   const {
@@ -34,7 +35,7 @@ const layout = ({ children }: { children: ReactNode }) => {
     setIsLoading(false);
   }, [isUserLoggedIn, router]);
 
-  if (isLoading) {
+  if (isLoading || myInfoLoading) {
     return <div>Loading...</div>;
   }
 

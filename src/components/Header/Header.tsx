@@ -5,20 +5,20 @@ import { Dropdown, Navbar, Avatar } from "flowbite-react";
 import Link from "next/link";
 import { FaShoppingCart } from "react-icons/fa";
 import { getFromLocalStorage } from "@/utils/local-storage";
-import { useRouter } from "next/navigation";
 import { logoutUser } from "@/services/authService";
+import { useSelector } from "react-redux";
 
 const navbarData = [
   { id: 1, title: "Home", path: "/" },
-  { id: 2, title: "Shop", path: "/shop" },
-  { id: 3, title: "About", path: "/about" },
-  { id: 4, title: "Contact", path: "/contact" },
+  { id: 2, title: "Shop", path: "/" },
+  { id: 3, title: "About", path: "/" },
+  { id: 4, title: "Contact", path: "/" },
 ];
 
 const Header = () => {
   const userInfo = getFromLocalStorage("userInfo");
+  const totalCart = useSelector((state: any) => state.cartReducer.cart.length);
 
-  const router = useRouter();
   const handleLogout = () => {
     logoutUser();
   };
@@ -34,7 +34,7 @@ const Header = () => {
           href="/cart">
           <FaShoppingCart />
           <span>
-            <sup className="text-[16px] text-cyan-900">(5)</sup>
+            <sup className="text-[16px] text-cyan-900">({totalCart})</sup>
           </span>
         </Link>
         {userInfo ? (

@@ -15,7 +15,7 @@ export const getFromLocalStorage = (key: string): any => {
     return "";
   }
 
-  if (key === "userInfo") {
+  if (key === "userInfo" || key === "cart") {
     return JSON.parse(localStorage.getItem(key) as string);
   }
 

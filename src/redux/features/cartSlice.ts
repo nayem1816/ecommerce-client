@@ -11,7 +11,7 @@ export const cartSlice = createSlice({
     addToCart: (state, action) => {
       const id = action.payload.id;
       const isProductInCart = state.cart.find(
-        (product: any) => product.id === id
+        (product: any) => product._id === id
       );
 
       if (isProductInCart) {
@@ -26,7 +26,7 @@ export const cartSlice = createSlice({
         });
       } else {
         state.cart.push({ ...action.payload, quantity: 1 });
-        toast.success(`${action.payload.name} added to cart`, {
+        toast.success(`${action.payload.productName} added to cart`, {
           position: "bottom-center",
           autoClose: 1000,
           hideProgressBar: true,
@@ -42,7 +42,7 @@ export const cartSlice = createSlice({
     updateCart: (state, action) => {
       const id = action.payload.id;
       const isProductInCart = state.cart.find(
-        (product: any) => product.id === id
+        (product: any) => product._id === id
       );
 
       const type = action.payload.typeAction;
@@ -68,12 +68,12 @@ export const cartSlice = createSlice({
     removeFromCart: (state, action) => {
       const id = action.payload.id;
       const isProductInCart = state.cart.find(
-        (product: any) => product.id === id
+        (product: any) => product._id === id
       );
 
       if (isProductInCart) {
-        state.cart = state.cart.filter((product: any) => product.id !== id);
-        toast.success(`${isProductInCart.name} removed from cart`, {
+        state.cart = state.cart.filter((product: any) => product._id !== id);
+        toast.success(`${isProductInCart.productName} removed from cart`, {
           position: "bottom-center",
           autoClose: 1000,
           hideProgressBar: true,

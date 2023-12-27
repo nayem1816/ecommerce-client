@@ -8,12 +8,16 @@ import {
   updateCart,
 } from "../../../redux/features/cartSlice";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type Cart = {
-  id: number;
-  name: string;
+  _id: string;
+  productName: string;
   price: number;
   quantity: number;
+  productImage: {
+    url: string;
+  };
 };
 
 const CartPage = () => {
@@ -22,25 +26,27 @@ const CartPage = () => {
     (state: any) => state.cartReducer.cart
   ) as Cart[];
 
+  const router = useRouter();
+
   useEffect(() => {
     setData(cartData);
   }, [cartData]);
 
   const dispatch = useDispatch();
 
-  const totalQuantity = data.reduce((total, item) => total + item.quantity, 0);
-  const totalPrice = data.reduce(
+  const totalQuantity = data?.reduce((total, item) => total + item.quantity, 0);
+  const totalPrice = data?.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
-  const handlePlusBtn = (id: number) => {
+  const handlePlusBtn = (id: any) => {
     dispatch(updateCart({ typeAction: "plus", id }));
   };
-  const handleMinusBtn = (id: number) => {
+  const handleMinusBtn = (id: any) => {
     dispatch(updateCart({ typeAction: "minus", id }));
   };
-  const handleRemoveBtn = (id: number) => {
+  const handleRemoveBtn = (id: any) => {
     dispatch(removeFromCart({ id }));
   };
   const handleClearBtn = () => {
@@ -48,7 +54,7 @@ const CartPage = () => {
   };
 
   const handleCheckoutBtn = () => {
-    console.log("Checkout");
+    router.push("/checkout");
   };
   return (
     <div>
@@ -63,7 +69,7 @@ const CartPage = () => {
             <table className="w-full shadow-inner">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="px-6 py-3 font-bold whitespace-nowrap">
+                  <th className="px-6 py-3 font-bold whitespace-nowrap text-start">
                     Product
                   </th>
                   <th className="px-6 py-3 font-bold whitespace-nowrap">Qty</th>
@@ -77,14 +83,21 @@ const CartPage = () => {
               </thead>
               <tbody>
                 {data.map((item) => (
-                  <tr key={item.id}>
-                    <td className="p-4 px-6 text-center whitespace-nowrap">
-                      {item.name}
+                  <tr key={item._id}>
+                    <td className="p-4 px-6 text-center whitespace-nowrap flex gap-2 items-center">
+                      <div className="img">
+                        <img
+                          className="w-20 h-20 rounded-xl"
+                          src={item?.productImage?.url}
+                          alt=""
+                        />
+                      </div>
+                      {item?.productName}
                     </td>
                     <td className="p-4 px-6 text-center whitespace-nowrap">
                       <div>
                         <button
-                          onClick={() => handleMinusBtn(item.id)}
+                          onClick={() => handleMinusBtn(item?._id)}
                           className="px-2 py-0 shadow">
                           -
                         </button>
@@ -92,7 +105,7 @@ const CartPage = () => {
                           {item.quantity}
                         </button>
                         <button
-                          onClick={() => handlePlusBtn(item.id)}
+                          onClick={() => handlePlusBtn(item?._id)}
                           className="px-2 py-0 shadow">
                           +
                         </button>
@@ -103,7 +116,7 @@ const CartPage = () => {
                     </td>
                     <td className="p-4 px-6 text-center whitespace-nowrap">
                       <button
-                        onClick={() => handleRemoveBtn(item.id)}
+                        onClick={() => handleRemoveBtn(item?._id)}
                         className="px-2 py-0 text-red-100 bg-red-600 rounded">
                         x
                       </button>
@@ -130,7 +143,7 @@ const CartPage = () => {
               </tbody>
             </table>
             <div className="flex justify-end mt-4 space-x-2">
-              <Link href="/allProducts">
+              <Link href="/">
                 <button className="px-6 py-3 text-sm text-gray-800 bg-gray-200 hover:bg-gray-400">
                   Continue Shopping
                 </button>
